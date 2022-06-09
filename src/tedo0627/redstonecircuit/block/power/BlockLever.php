@@ -43,6 +43,7 @@ class BlockLever extends Lever implements IRedstoneComponent, ILinkRedstoneWire 
             $powered = $this->isActivated();
             $event = new BlockRedstonePowerUpdateEvent($this, !$powered, $powered);
             $event->call();
+            if ($event->isCancelled()) return true;
         }
         parent::onInteract($item, $face, $clickVector, $player);
         BlockUpdateHelper::updateAroundDirectionRedstone($this, Facing::opposite($this->getFacing()->getFacing()));

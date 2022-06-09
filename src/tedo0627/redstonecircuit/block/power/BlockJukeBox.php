@@ -23,6 +23,7 @@ class BlockJukeBox extends Jukebox implements IRedstoneComponent, ILinkRedstoneW
             $powered = $this->getRecord() !== null;
             $event = new BlockRedstonePowerUpdateEvent($this, !$powered, $powered);
             $event->call();
+            if ($event->isCancelled()) return true;
         }
         parent::onInteract($item, $face, $clickVector, $player);
         BlockUpdateHelper::updateAroundRedstone($this);

@@ -4,8 +4,11 @@ namespace tedo0627\redstonecircuit\event;
 
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockEvent;
+use pocketmine\event\Cancellable;
+use pocketmine\event\CancellableTrait;
 
-class BlockRedstoneSignalUpdateEvent extends BlockEvent {
+class BlockRedstoneSignalUpdateEvent extends BlockEvent implements Cancellable {
+    use CancellableTrait;
 
     private int $newSignal;
     private int $oldSignal;

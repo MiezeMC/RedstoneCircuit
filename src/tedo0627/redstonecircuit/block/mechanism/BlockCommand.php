@@ -180,6 +180,7 @@ class BlockCommand extends Opaque implements IRedstoneComponent, CommandSender {
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, $this->isPowered());
             $event->call();
+            if ($event->isCancelled()) return;
             $powered = $event->getNewPowered();
             if ($powered === $this->isPowered()) return;
         }

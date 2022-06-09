@@ -58,6 +58,7 @@ class BlockWeightedPressurePlateHeavy extends WeightedPressurePlateHeavy impleme
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $power, $oldPower);
             $event->call();
+            if ($event->isCancelled()) return;
             $power = $event->getNewSignal();
             if ($oldPower === $power) return;
         }
@@ -80,6 +81,7 @@ class BlockWeightedPressurePlateHeavy extends WeightedPressurePlateHeavy impleme
         if ($oldPower !== $power && RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $power, $oldPower);
             $event->call();
+            if ($event->isCancelled()) return false;
             $power = $event->getNewSignal();
             if ($oldPower === $power) return true;
         }

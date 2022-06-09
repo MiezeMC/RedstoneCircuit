@@ -125,6 +125,7 @@ class BlockActivatorRail extends ActivatorRail implements IRedstoneComponent {
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, $oldPowered);
             $event->call();
+            if ($event->isCancelled()) return;
             $powered = $event->getNewPowered();
             if ($oldPowered === $powered) return;
         }

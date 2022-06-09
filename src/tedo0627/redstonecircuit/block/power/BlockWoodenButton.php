@@ -41,6 +41,7 @@ class BlockWoodenButton extends WoodenButton implements IRedstoneComponent, ILin
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, !$this->isPressed(), $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return true;
         }
         parent::onInteract($item, $face, $clickVector, $player);
         BlockUpdateHelper::updateAroundDirectionRedstone($this, Facing::opposite($this->getFacing()));
@@ -58,6 +59,7 @@ class BlockWoodenButton extends WoodenButton implements IRedstoneComponent, ILin
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, !$this->isPressed(), $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return;
         }
         parent::onScheduledUpdate();
         BlockUpdateHelper::updateAroundDirectionRedstone($this, Facing::opposite($this->getFacing()));
@@ -83,6 +85,7 @@ class BlockWoodenButton extends WoodenButton implements IRedstoneComponent, ILin
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, !$this->isPressed(), $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return false;
         }
         $this->setPressed(true);
         $this->getPosition()->getWorld()->setBlock($this->getPosition(), $this);

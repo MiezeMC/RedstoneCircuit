@@ -38,6 +38,7 @@ class BlockSkull extends Skull implements IRedstoneComponent {
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, $this->isMouthMoving());
             $event->call();
+            if ($event->isCancelled()) return;
             $powered = $event->getNewPowered();
             if ($powered === $this->isMouthMoving()) return;
         }

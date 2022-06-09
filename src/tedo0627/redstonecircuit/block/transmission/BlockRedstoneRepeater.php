@@ -16,6 +16,8 @@ use tedo0627\redstonecircuit\block\ILinkRedstoneWire;
 use tedo0627\redstonecircuit\block\IRedstoneComponent;
 use tedo0627\redstonecircuit\block\IRedstoneDiode;
 use tedo0627\redstonecircuit\event\BlockRedstonePowerUpdateEvent;
+use tedo0627\redstonecircuit\event\BlockRedstoneRepeaterUpdatePowerEvent;
+use tedo0627\redstonecircuit\event\BlockRedstoneRepeaterUpdatePowerEvent2;
 use tedo0627\redstonecircuit\RedstoneCircuit;
 
 class BlockRedstoneRepeater extends RedstoneRepeater implements IRedstoneComponent, ILinkRedstoneWire, IRedstoneDiode {
@@ -46,15 +48,25 @@ class BlockRedstoneRepeater extends RedstoneRepeater implements IRedstoneCompone
     }
 
     public function onScheduledUpdate(): void {
+        $oldPowered = $this->isPowered();
+        $powered = !$oldPowered;
+
+        $ev = new BlockRedstoneRepeaterUpdatePowerEvent($this, $oldPowered, $powered);
+        $ev->call();
+        if ($ev->isCancelled()) return;
+
         if ($this->isLocked()) return;
 
         $side = BlockPowerHelper::isSidePowered($this, $this->getFacing());
 
-        $oldPowered = $this->isPowered();
-        $powered = !$oldPowered;
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, $oldPowered);
             $event->call();
+            if ($event->isCancelled()) {
+                $this->setPowered(false);
+                $this->getPosition()->getWorld()->setBlock($this->getPosition(), $this);
+                return;
+            }
 
             $powered = $event->getNewPowered();
         }

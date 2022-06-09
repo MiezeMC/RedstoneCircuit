@@ -33,6 +33,7 @@ class BlockRedstoneTorch extends RedstoneTorch implements IRedstoneComponent, IL
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $lit, $lit);
             $event->call();
+            if ($event->isCancelled()) return;
             $lit = $event->getNewPowered();
         }
         $this->setLit($lit);

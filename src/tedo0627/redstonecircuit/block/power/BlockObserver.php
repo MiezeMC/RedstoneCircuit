@@ -110,6 +110,7 @@ class BlockObserver extends Opaque implements IRedstoneComponent, ILinkRedstoneW
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, !$powered);
             $event->call();
+            if ($event->isCancelled()) return;
             $powered = $event->getNewPowered();
         }
         $this->setPowered($powered);

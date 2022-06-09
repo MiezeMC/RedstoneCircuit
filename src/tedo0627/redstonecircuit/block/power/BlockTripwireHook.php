@@ -198,6 +198,7 @@ class BlockTripwireHook extends TripwireHook implements IRedstoneComponent, ILin
     private function callEvent(BlockTripwireHook $block, bool $powered): bool {
         $event = new BlockRedstonePowerUpdateEvent($block, $powered, $block->isPowered());
         $event->call();
+        if ($event->isCancelled()) return false;
         return $event->getNewPowered();
     }
 

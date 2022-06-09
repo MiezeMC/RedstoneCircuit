@@ -27,6 +27,7 @@ class BlockIronTrapdoor extends Trapdoor implements IRedstoneComponent {
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, $powered, $this->isOpen());
             $event->call();
+            if ($event->isCancelled()) return;
             $powered = $event->getNewPowered();
             if ($powered === $this->isOpen()) return;
         }

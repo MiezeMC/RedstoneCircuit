@@ -107,6 +107,7 @@ class BlockRedstoneComparator extends RedstoneComparator implements IRedstoneCom
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $power, $this->getOutputSignalStrength());
             $event->call();
+            if ($event->isCancelled()) return;
 
             $power = $event->getNewSignal();
             if ($this->getOutputSignalStrength() == $power) return;

@@ -45,6 +45,7 @@ class BlockDaylightSensor extends DaylightSensor implements IRedstoneComponent, 
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $signal, $oldSignal);
             $event->call();
+            if ($event->isCancelled()) return;
             $signal = $event->getNewSignal();
             if ($oldSignal === $signal) return;
         }

@@ -57,6 +57,7 @@ class BlockStonePressurePlate extends StonePressurePlate implements IRedstoneCom
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, false, $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return;
             $pressed = $event->getNewPowered();
         }
         $this->setPressed($pressed);
@@ -75,6 +76,7 @@ class BlockStonePressurePlate extends StonePressurePlate implements IRedstoneCom
             if (RedstoneCircuit::isCallEvent()) {
                 $event = new BlockRedstonePowerUpdateEvent($this, true, $this->isPressed());
                 $event->call();
+                if ($event->isCancelled()) return false;
                 $pressed = $event->getNewPowered();
             }
             $this->setPressed($pressed);

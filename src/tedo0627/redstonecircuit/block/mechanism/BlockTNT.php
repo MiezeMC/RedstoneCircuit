@@ -18,6 +18,7 @@ class BlockTNT extends TNT implements IRedstoneComponent {
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, true, false);
             $event->call();
+            if ($event->isCancelled()) return;
             if (!$event->getNewPowered()) return;
         }
         $this->ignite();

@@ -38,6 +38,7 @@ class BlockStoneButton extends StoneButton implements IRedstoneComponent, ILinkR
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, !$this->isPressed(), $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return true;
         }
         parent::onInteract($item, $face, $clickVector, $player);
         BlockUpdateHelper::updateAroundDirectionRedstone($this, Facing::opposite($this->getFacing()));
@@ -50,6 +51,7 @@ class BlockStoneButton extends StoneButton implements IRedstoneComponent, ILinkR
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstonePowerUpdateEvent($this, !$this->isPressed(), $this->isPressed());
             $event->call();
+            if ($event->isCancelled()) return;
         }
         parent::onScheduledUpdate();
         BlockUpdateHelper::updateAroundDirectionRedstone($this, Facing::opposite($this->getFacing()));

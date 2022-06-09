@@ -54,6 +54,7 @@ class BlockTarget extends Opaque implements IRedstoneComponent, ILinkRedstoneWir
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $signal, $this->getOutputSignalStrength());
             $event->call();
+            if ($event->isCancelled()) return;
             $signal = $event->getNewSignal();
         }
         $this->setOutputSignalStrength($signal);

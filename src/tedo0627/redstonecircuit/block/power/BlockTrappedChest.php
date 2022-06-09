@@ -37,6 +37,7 @@ class BlockTrappedChest extends TrappedChest implements IRedstoneComponent, ILin
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $signal, $this->getOutputSignalStrength());
             $event->call();
+            if ($event->isCancelled()) return;
             $signal = $event->getNewSignal();
             if ($this->getOutputSignalStrength() === $signal) return;
         }

@@ -137,6 +137,7 @@ class BlockRedstoneWire extends RedstoneWire implements IRedstoneComponent, ILin
         if (RedstoneCircuit::isCallEvent()) {
             $event = new BlockRedstoneSignalUpdateEvent($this, $power, $this->getOutputSignalStrength());
             $event->call();
+            if ($event->isCancelled()) return false;
 
             $power = $event->getNewSignal();
             if ($this->getOutputSignalStrength() == $power) return false;
